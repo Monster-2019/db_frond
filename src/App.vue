@@ -55,7 +55,7 @@
         >
             <el-descriptions
                 class="margin-top"
-                :title="'123'"
+                :title="item.title"
                 :column="4"
                 size="mini"
             >
