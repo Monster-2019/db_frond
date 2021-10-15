@@ -66,13 +66,12 @@
                     label-align="right"
                 >
                     <el-tag
-                        v-for="(item, index) in item.route"
-                        :key="item + index"
-                        :type="item"
+                        v-for="(itm, index) in item.route"
+                        :key="'1' + index"
                         effect="dark"
                         size="mini"
                     >
-                        {{ item }}
+                        {{ itm }}
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
@@ -81,13 +80,12 @@
                     label-align="right"
                 >
                     <el-tag
-                        v-for="(item, index) in item.subWay"
-                        :key="item + index"
-                        :type="item"
+                        v-for="(itm, index) in item.subWay"
+                        :key="'2' + index"
                         effect="dark"
                         size="mini"
                     >
-                        {{ item }}
+                        {{ itm }}
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
@@ -96,13 +94,13 @@
                     label-align="right"
                 >
                     <el-tag
-                        v-for="(item, index) in item.amount"
-                        :key="item + index"
-                        :type="item"
+                        v-for="(itm, index) in item.amount"
+                        :key="'3' + index"
+                        :type="item.type || ''"
                         effect="dark"
                         size="mini"
                     >
-                        {{ item }}
+                        {{ itm }}
                     </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item
@@ -184,16 +182,46 @@ export default {
         }
     },
 
+    watch: {
+        params: {
+            handler (val) {
+                window.history.replaceState(null, null, val)
+            },
+            deep: true
+        }
+    },
+
     computed: {
         start() {
             return (this.query.page - 1) * this.query.limit + 1
         },
         end() {
             return (this.query.page) * this.query.limit
+        },
+        params() {
+            const {page, limit} = this.query
+            return `?page=${page}&limit=${limit}`
         }
     },
 
     created() {
+        let params = window.location.search.substr(1)
+        params = params.split('&').map(item => {
+            let [key, value] = item.split('=')
+            return {
+                [`${key}`]: Number(value)
+            }
+        }).reduce((obj, item) => { 
+            obj = {
+                ...obj,
+                ...item
+            }
+            return  obj
+        }, {})
+        this.query = {
+            ...this.query,
+            ...params
+        }
         this.getList()
     },
 
@@ -210,7 +238,12 @@ export default {
                 limit: this.query.limit
             }
             let { list, limit, page, total } = await this.$api.getPostList(params)
-            this.tableData = list
+            this.tableData = list.map(item => {
+                if (item.amount.some(itm => itm <= 3000)) {
+                    item.type = 'success'
+                }
+                return item
+            })
             this.query.page = page
             this.query.limit = limit
             this.query.total = total
@@ -218,7 +251,7 @@ export default {
             if (curPage) {
                 window.scrollTo({
                     top: 0,
-                    // behavior: 'smooth'
+                    behavior: 'smooth'
                 })
             }
         },
