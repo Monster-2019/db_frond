@@ -239,7 +239,7 @@ export default {
             }
             let { list, limit, page, total } = await this.$api.getPostList(params)
             this.tableData = list.map(item => {
-                if (item.amount.some(itm => itm <= 3000)) {
+                if (item.amount.some(itm => itm <= 3500)) {
                     item.type = 'success'
                 }
                 return item
