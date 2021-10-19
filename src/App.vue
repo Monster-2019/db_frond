@@ -183,12 +183,12 @@ export default {
     },
 
     watch: {
-        params: {
-            handler (val) {
-                window.history.replaceState(null, null, val)
-            },
-            deep: true
-        }
+        // params: {
+        //     handler (val) {
+        //         window.history.replaceState(null, null, val)
+        //     },
+        //     deep: true
+        // }
     },
 
     computed: {
