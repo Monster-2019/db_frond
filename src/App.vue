@@ -205,22 +205,22 @@ export default {
     },
 
     created() {
-        let params = window.location.search.substr(1)
-        params = params.split('&').map(item => {
-            let [key, value] = item.split('=')
-            return {
-                [`${key}`]: Number(value)
-            }
-        }).reduce((obj, item) => { 
-            obj = {
-                ...obj,
-                ...item
-            }
-            return  obj
-        }, {})
+        // let params = window.location.search.substr(1)
+        // params = params.split('&').map(item => {
+        //     let [key, value] = item.split('=')
+        //     return {
+        //         [`${key}`]: Number(value)
+        //     }
+        // }).reduce((obj, item) => { 
+        //     obj = {
+        //         ...obj,
+        //         ...item
+        //     }
+        //     return  obj
+        // }, {})
         this.query = {
             ...this.query,
-            ...params
+            // ...params
         }
         this.getList()
     },
