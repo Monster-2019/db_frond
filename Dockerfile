@@ -11,4 +11,4 @@ RUN mkdir -p /app/renting
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/dist /app/renting
 EXPOSE 3003
-CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx", "-g", "daemon off;"]
