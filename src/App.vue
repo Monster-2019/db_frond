@@ -109,6 +109,11 @@
                     label-align="right"
                 >{{ formatPhone(item.phone) }}</el-descriptions-item>
                 <el-descriptions-item
+                    label="发帖时间:"
+                    :span="4"
+                    label-align="right"
+                >{{ item.createTime }}</el-descriptions-item>
+                <el-descriptions-item
                     label="性别:"
                     :span="2"
                     label-align="right"
@@ -170,6 +175,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
     data() {
         return {
@@ -180,15 +186,6 @@ export default {
                 limit: 10
             }
         }
-    },
-
-    watch: {
-        // params: {
-        //     handler (val) {
-        //         window.history.replaceState(null, null, val)
-        //     },
-        //     deep: true
-        // }
     },
 
     computed: {
@@ -205,22 +202,8 @@ export default {
     },
 
     created() {
-        // let params = window.location.search.substr(1)
-        // params = params.split('&').map(item => {
-        //     let [key, value] = item.split('=')
-        //     return {
-        //         [`${key}`]: Number(value)
-        //     }
-        // }).reduce((obj, item) => { 
-        //     obj = {
-        //         ...obj,
-        //         ...item
-        //     }
-        //     return  obj
-        // }, {})
         this.query = {
             ...this.query,
-            // ...params
         }
         this.getList()
     },
@@ -242,6 +225,7 @@ export default {
                 if (item.amount.some(itm => itm <= 3500)) {
                     item.type = 'success'
                 }
+                item.createTime = moment(Number(item.time)).format('YYYY-MM-DD hh:mm:ss')
                 return item
             })
             this.query.page = page
